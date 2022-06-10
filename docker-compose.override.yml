@@ -1,0 +1,52 @@
+version: "3"
+services: 
+  gateway:
+    ports:
+      - 8000:80
+    volumes:
+      - ./gateway/devCaddyfile:/etc/caddy/Caddyfile
+      - ./webui/dist:/app
+      - ./gateway/data:/data 
+      - ./gateway/config:/config 
+
+  auth:
+    build:
+      context: ./auth
+      args:
+        NODE_ENV: development
+    volumes:
+      - ./auth:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - MONGO_USER=devuser
+      - MONGO_PASSWORD=devpassword
+      - TOKEN_SECRET=${TOKEN_SECRET}
+      - EMAIL_PASSWORD=${EMAIL_PASSWORD}
+    command: npm run dev  
+
+  webui:
+    build:
+      context: ./webui
+    volumes:
+      - ./webui:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+
+  mailslurper:
+    image: marcopas/docker-mailslurper
+    ports:
+      - "2500:2500"
+      - "9000:8080"
+      - "8085:8085"
+
+  mongo:
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=devuser
+      - MONGO_INITDB_ROOT_PASSWORD=devpassword
+
+volumes:
+  caddy_data:
+    external: false

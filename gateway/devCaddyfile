@@ -1,0 +1,12 @@
+http://localhost
+
+handle /api/auth* {
+  reverse_proxy auth:3000
+}
+
+handle {
+  reverse_proxy webui:3000
+}
+
+log
+

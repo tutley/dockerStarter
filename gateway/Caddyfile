@@ -1,0 +1,11 @@
+domain.com, www.domain.com
+{
+  handle /api/auth* {
+    reverse_proxy auth:3000
+  }
+
+  root * /app
+  file_server
+  encode zstd gzip
+}
+
