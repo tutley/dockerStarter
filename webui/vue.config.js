@@ -5,7 +5,7 @@ module.exports = defineConfig({
     'vuetify'
   ],
   pwa: {
-    name: 'Sparqline',
+    name: 'starter',
     themeColor: '#1E3D58',
     msTileColor: '#000000', 
     appleMobileWebAppCapable: 'yes',
